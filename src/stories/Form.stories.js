@@ -28,14 +28,16 @@ const DropdownField = (args) => {
     setValue(args.multiple ? [] : null);
   }, [args.multiple]);
   return (
-    <form className="w-full max-w-md mx-auto mt-10">
-      <label className="block mb-2 font-medium">Label</label>
-      <Dropdown
-        {...args}
-        options={options}
-        value={value}
-        onChange={setValue}
-      />
+    <form className="w-full mt-10 flex flex-row items-center gap-4">
+      <label className="block mb-2 font-medium w-[150px] flex-shrink-0">Label</label>
+      <div className="flex-grow">
+        <Dropdown
+            {...args}
+            options={options}
+            value={value}
+            onChange={setValue}
+        />
+      </div>
     </form>
   );
 };
