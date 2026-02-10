@@ -150,7 +150,7 @@ const Dropdown = ({
   return (
     <div className="dropdown relative" ref={ref}>
       <div
-        className="dropdown-control border px-3 py-2 rounded cursor-pointer bg-white min-h-[42px] flex items-center flex-wrap gap-1"
+        className="dropdown-control border px-3 py-2 rounded cursor-pointer bg-white min-h-[42px] flex items-center flex-wrap gap-1 relative"
         onClick={() => setOpen(o => !o)}
         tabIndex={0}
         onBlur={e => {
@@ -162,6 +162,11 @@ const Dropdown = ({
         }}
       >
         {displayValue}
+        <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+          <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path d="M6 8l4 4 4-4" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </span>
       </div>
       {menuNode}
     </div>
