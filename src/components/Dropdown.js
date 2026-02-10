@@ -57,16 +57,30 @@ const Dropdown = ({
     }
   };
 
+  // Highlight search keyword in option label
+  const highlightText = (text, keyword) => {
+    if (!keyword) return text;
+    const regex = new RegExp(`(${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\$&')})`, 'gi');
+    return String(text).split(regex).map((part, i) =>
+      regex.test(part)
+        ? <span key={i} className="bg-green-400 text-black rounded px-1">{part}</span>
+        : part
+    );
+  };
+
   // Render option
-  const renderOpt = (option, idx) => (
-    <div
-      key={idx}
-      className="dropdown-option cursor-pointer px-3 py-2 hover:bg-gray-100"
-      onClick={() => handleSelect(option)}
-    >
-      {renderOption ? renderOption(option) : (option.label || option)}
-    </div>
-  );
+  const renderOpt = (option, idx) => {
+    const label = renderOption ? renderOption(option) : (option.label || option);
+    return (
+      <div
+        key={idx}
+        className="dropdown-option cursor-pointer px-3 py-2 hover:bg-gray-100"
+        onClick={() => handleSelect(option)}
+      >
+        {isSearchable && search ? highlightText(label, search) : label}
+      </div>
+    );
+  };
 
   // Dropdown menu
   const menu = (
@@ -80,6 +94,8 @@ const Dropdown = ({
           placeholder="Search..."
           value={search}
           onChange={e => setSearch(e.target.value)}
+          tabIndex={0}
+          autoFocus={open}
         />
       )}
       <div className="dropdown-options max-h-60 overflow-auto">
@@ -106,7 +122,7 @@ const Dropdown = ({
           <div className="flex flex-wrap gap-1">
             {value.map((v, i) => (
               <span key={i} className="flex items-center bg-gray-100 rounded px-2 py-1 text-sm mr-1 mb-1">
-                {v.label || v}
+                {typeof v === 'object' ? (v.label || v.value || '') : String(v)}
                 <button
                   type="button"
                   className="ml-1 text-gray-400 hover:text-gray-700 focus:outline-none"
@@ -122,7 +138,9 @@ const Dropdown = ({
           <span className="text-gray-400">{placeholder}</span>
         )
       )
-    : (value ? (value.label || value) : <span className="text-gray-400">{placeholder}</span>);
+    : (value
+        ? (typeof value === 'object' ? (value.label || value.value || '') : String(value))
+        : <span className="text-gray-400">{placeholder}</span>);
 
   // Portal rendering
   const menuNode = isPortal && open
@@ -135,7 +153,13 @@ const Dropdown = ({
         className="dropdown-control border px-3 py-2 rounded cursor-pointer bg-white min-h-[42px] flex items-center flex-wrap gap-1"
         onClick={() => setOpen(o => !o)}
         tabIndex={0}
-        onBlur={() => setTimeout(() => setOpen(false), 150)}
+        onBlur={e => {
+          // Only close if focus moves outside the dropdown
+          if (e.relatedTarget && ref.current && ref.current.contains(e.relatedTarget)) {
+            return;
+          }
+          setTimeout(() => setOpen(false), 150);
+        }}
       >
         {displayValue}
       </div>
