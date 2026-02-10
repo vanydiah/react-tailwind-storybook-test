@@ -60,7 +60,7 @@ const Dropdown = ({
   // Highlight search keyword in option label
   const highlightText = (text, keyword) => {
     if (!keyword) return text;
-    const regex = new RegExp(`(${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\$&')})`, 'gi');
+    const regex = new RegExp(`(${keyword.replace(/[.*+?^${}()|[\]\\]/g, '$&')})`, 'gi');
     return String(text).split(regex).map((part, i) =>
       regex.test(part)
         ? <span key={i} className="bg-green-400 text-black rounded px-1">{part}</span>
