@@ -121,7 +121,7 @@ const Dropdown = ({
         Array.isArray(value) && value.length > 0 ? (
           <div className="flex flex-wrap gap-1">
             {value.map((v, i) => (
-              <span key={i} className="flex items-center bg-gray-100 rounded px-2 py-1 text-sm mr-1 mb-1">
+              <span key={i} className="flex items-start bg-gray-100 rounded px-2 py-1 text-sm mr-1 mb-1">
                 {typeof v === 'object' ? (v.label || v.value || '') : String(v)}
                 <button
                   type="button"
