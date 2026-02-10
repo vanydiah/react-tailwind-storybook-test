@@ -85,7 +85,7 @@ const Dropdown = ({
   // Dropdown menu
   const menu = (
     <div
-      className="dropdown-menu absolute bg-white border rounded shadow-lg mt-1"
+      className="dropdown-menu w-full text-left absolute bg-white border rounded shadow-lg mt-1"
       style={{ zIndex }}
     >
       {isSearchable && (
